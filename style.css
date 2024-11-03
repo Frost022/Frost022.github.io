@@ -1,12 +1,11 @@
- /* Estilo do corpo da página */
- body {
+body {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-image: url('assets/fundo.jpeg'); 
+    background-image: url('assets/Fundo.png'); 
     background-size: cover;
     background-position: center;
     color: white;
