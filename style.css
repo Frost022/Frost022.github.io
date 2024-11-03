@@ -1,0 +1,100 @@
+ /* Estilo do corpo da página */
+ body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-image: url('assets/fundo.jpeg'); 
+    background-size: cover;
+    background-position: center;
+    color: white;
+}
+
+/* Estilo do contêiner central */
+#paginaInicial {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+/* Estilo do campo de entrada */
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 10px;
+    width: 80%;
+    max-width: 300px;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Estilo da nova página de confirmação */
+#confirmacao {
+    display: none;
+    background-color: black;
+    color: rgb(0, 255, 76);
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Ícone de verificação */
+.check {
+    font-size: 50px;
+    color: green;
+    margin-top: 10px;
+}
+#locais {
+    margin-top: 20px;
+}
+#rodapeLocais {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+ /* Estilo do botão */
+ button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}
+
+.botao-link {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0e0f11;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.botao-link:hover {
+    background-color: #0056b3;
+}
+button:hover {
+background-color: #0056b3;
+}
+.buttonback {
+    display: inline-block;
+    margin: 10px 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0e0f11;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
