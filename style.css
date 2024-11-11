@@ -33,7 +33,6 @@ input[type="text"] {
 
 /* Estilo da nova página de confirmação */
 #confirmacao {
-    display: none;
     background-color: black;
     color: rgb(0, 255, 76);
     text-align: center;

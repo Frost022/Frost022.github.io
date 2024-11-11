@@ -13,12 +13,11 @@
         <input type="text" id="nome" placeholder="Digite seu nome" required>
         <button onclick="confirmarPresenca()">Confirmar Presença</button>
         <div id="rodapeLocais">
-        <a href="https://www.google.com.br/maps/place/Segunda+Igreja+Batista+de+Rio+das+Ostras/@-22.5214505,-41.9379672,19z/data=!4m6!3m5!1s0x97b4a1a6750ea1:0x2e02337481c04078!8m2!3d-22.521683!4d-41.938102!16s%2Fg%2F1wt3pmvf?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="botao-link">Local da Cerimônia</a>
-        <a href="https://www.google.com.br/maps/place/Varand%C3%A3o+da+Barra/@-22.5741934,-41.9854111,19z/data=!4m6!3m5!1s0x97b343dafb7059:0xf59416f423443264!8m2!3d-22.5742734!4d-41.9854478!16s%2Fg%2F11gk8k9_7l?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="botao-link">Local da Recepção</a>
+             <a href="https://www.google.com.br/maps/place/Segunda+Igreja+Batista+de+Rio+das+Ostras/@-22.5214505,-41.9379672,19z/data=!4m6!3m5!1s0x97b4a1a6750ea1:0x2e02337481c04078!8m2!3d-22.521683!4d-41.938102!16s%2Fg%2F1wt3pmvf?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="botao-link">Local da Cerimônia</a>
+             <a href="https://www.google.com.br/maps/place/Varand%C3%A3o+da+Barra/@-22.5741934,-41.9854111,19z/data=!4m6!3m5!1s0x97b343dafb7059:0xf59416f423443264!8m2!3d-22.5742734!4d-41.9854478!16s%2Fg%2F11gk8k9_7l?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="botao-link">Local da Recepção</a>
     </div>
     </div>
-
-    <div id="confirmacao" style="display: none;">
+    <div id="confirmacao">
         <h2>Que bom que teremos você conosco!</h2>
         <p id="mensagemConfirmacao"></p>
         <div class="check">✔️</div>
@@ -28,28 +27,51 @@
             <a href="https://www.google.com.br/maps/place/Varand%C3%A3o+da+Barra/@-22.5741934,-41.9854111,19z/data=!4m6!3m5!1s0x97b343dafb7059:0xf59416f423443264!8m2!3d-22.5742734!4d-41.9854478!16s%2Fg%2F11gk8k9_7l?entry=ttu&g_ep=EgoyMDI0MTAyNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="botao-link">Local da Recepção</a>
         </div>
     </div>
+    <div id="convidados"></div>
 
     <script>
-        function confirmarPresenca() {
+        async function confirmarPresenca() {
+            const input = document.getElementById("nome")
             const nome = document.getElementById("nome").value.trim();
 
             if (nome === "") {
                 alert("Por favor, insira seu nome antes de confirmar.");
                 return;
-            }
-
-            // Obter a lista atual de confirmados do LocalStorage
-            let confirmados = JSON.parse(localStorage.getItem("confirmados")) || [];
-            confirmados.push({ nome, data: new Date().toLocaleString() });
-
-            // Salvar a lista atualizada no LocalStorage
-            localStorage.setItem("confirmados", JSON.stringify(confirmados));
-
-            // Exibir mensagem de confirmação
-            document.getElementById("paginaInicial").style.display = "none";
-            document.getElementById("confirmacao").style.display = "block";
-            document.getElementById("mensagemConfirmacao").textContent = `${nome}, você é uma benção de Deus em nossas vidas!`;
+            } 
+            console.log(input)
+            input.value=""
+            await fetch('http://18.191.194.144/convidados', {method: "POST", headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }, body:JSON.stringify({name:nome})})  
+           const inicial = document.getElementById("paginaInicial")
+           const confirmar = document.getElementById("confirmacao")
+           inicial.style.display="none"
+           confirmar.style.display="block"
         }
+        async function pegarLista() {
+           
+            fetch('http://18.191.194.144/convidados', {method: "GET"}).then((lista)=>lista.json()).then((resposta)=>{
+                const lista=document.getElementById("convidados")
+                resposta.forEach((convidado)=>{
+                    const elemento=document.createElement("h1")
+                    elemento.textContent=convidado.name
+                    elemento.id=convidado.id
+                    const botao=document.createElement("button")
+                    botao.textContent="Excluir"
+                    botao.onclick=()=>Delete(convidado.id,convidado.name)
+                    elemento.appendChild(botao)
+                    lista.appendChild(elemento)
+                })
+            })
+               
+        }
+        async function Delete(id,nome) {
+
+            const Delete = await fetch (`http://18.191.194.144/convidados/${id}`, {method: "DELETE"})
+            alert(`Convidado ${nome} foi excluido`)
+        }
+
 
         function voltar() {
             // Voltar para a página inicial
@@ -57,6 +79,9 @@
             document.getElementById("confirmacao").style.display = "none";
             document.getElementById("nome").value = "";
         }
+        const confirmar = document.getElementById("confirmacao")
+        confirmar.style.display="none"
+        pegarLista()
     </script>
 </body>
 </html>
