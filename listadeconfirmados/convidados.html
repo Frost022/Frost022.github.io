@@ -136,37 +136,26 @@
 
                 listaConvidados.forEach((convidado) => {
                     const elemento = document.createElement("div");
-                    elemento.className = "convidado";
-                    
+                    elemento.className = "convidado";                    
                     const nome = document.createElement("span");
                     nome.textContent = `Nome: ${convidado.name}`;
                     elemento.appendChild(nome);
-
-                    // Botão de Excluir
                     const botaoExcluir = document.createElement("button");
                     botaoExcluir.textContent = "Excluir";
                     botaoExcluir.className = "botaoExcluir";
                     botaoExcluir.onclick = () => Delete(convidado.id, convidado.name);
-
                     elemento.appendChild(botaoExcluir);
                     lista.appendChild(elemento);
                 });
             })
             .catch((erro) => console.error('Erro ao carregar a lista de convidados:', erro));
         }
-
-        // Função para excluir um convidado
         async function Delete(id, nome) {
             const confirmacao = confirm(`Tem certeza que deseja excluir o convidado ${nome}?`);
 
-            if (confirmacao) {
-                // Envia a requisição DELETE para excluir o convidado
+            if (confirmacao) {    
                 await fetch(`http://18.191.194.144/convidados/${id}`, { method: "DELETE" });
-
-                // Exibe uma mensagem de sucesso
                 alert(`Convidado ${nome} foi excluído!`);
-
-                // Recarrega a lista após a exclusão
                 pegarLista();
             }
         }
