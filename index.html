@@ -40,7 +40,7 @@
             } 
             console.log(input)
             input.value=""
-            await fetch('http://18.191.194.144/convidados', {method: "POST", headers: {
+            await fetch('https://casamentobrunoeagatha.com.br/convidados', {method: "POST", headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
         }, body:JSON.stringify({name:nome})})  
@@ -49,26 +49,9 @@
            inicial.style.display="none"
            confirmar.style.display="block"
         }
-        async function pegarLista() {
-           
-            fetch('http://18.191.194.144/convidados', {method: "GET"}).then((lista)=>lista.json()).then((resposta)=>{
-                const lista=document.getElementById("convidados")
-                resposta.forEach((convidado)=>{
-                    const elemento=document.createElement("h1")
-                    elemento.textContent=convidado.name
-                    elemento.id=convidado.id
-                    const botao=document.createElement("button")
-                    botao.textContent="Excluir"
-                    botao.onclick=()=>Delete(convidado.id,convidado.name)
-                    elemento.appendChild(botao)
-                    lista.appendChild(elemento)
-                })
-            })
-               
-        }
         async function Delete(id,nome) {
 
-            const Delete = await fetch (`http://18.191.194.144/convidados/${id}`, {method: "DELETE"})
+            const Delete = await fetch (`https://casamentobrunoeagatha.com.br/convidados/${id}`, {method: "DELETE"})
             alert(`Convidado ${nome} foi excluido`)
         }
 

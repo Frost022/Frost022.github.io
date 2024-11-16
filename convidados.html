@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Lista de Convidados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        #paginaLogin {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        #convidadosLista {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            background-color: rgba(0, 0, 0, 0.7);  
+            color: white;                          
+            padding: 15px 30px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        #listaConvidados {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .convidado {
+            background-color: #fff;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 400px;
+            text-align: left;
+        }
+
+        .convidado span {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .botaoExcluir {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .botaoExcluir:hover {
+            background-color: #c0392b;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            width: 80%;
+            max-width: 300px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="paginaLogin">
+        <h1>Área Administrativa</h1>
+        <input type="text" id="codigo" placeholder="Digite o código de acesso" required>
+        <button onclick="verificarCodigo()">Entrar</button>
+        <p id="erroLogin" style="color: red; display: none;">Código incorreto.</p>
+    </div>
+
+    <div id="convidadosLista" style="display:none;">
+        <h1>Lista de Convidados Confirmados</h1>
+        <div id="listaConvidados"></div>
+    </div>
+
+    <script>
+        const codigoCorreto = "12345"; 
+
+        function verificarCodigo() {
+            const codigoInserido = document.getElementById("codigo").value.trim();
+            
+            if (codigoInserido === codigoCorreto) {
+                
+                document.getElementById("paginaLogin").style.display = "none";
+                document.getElementById("convidadosLista").style.display = "block";
+                pegarLista();
+            } else {
+               
+                document.getElementById("erroLogin").style.display = "block";
+            }
+        }
+
+        async function pegarLista() {
+            fetch('https://casamentobrunoeagatha.com.br/convidados', { method: "GET" })
+            .then((resposta) => resposta.json())
+            .then((listaConvidados) => {
+                const lista = document.getElementById("listaConvidados");
+                lista.innerHTML = ""; 
+
+                listaConvidados.forEach((convidado) => {
+                    const elemento = document.createElement("div");
+                    elemento.className = "convidado";                    
+                    const nome = document.createElement("span");
+                    nome.textContent = `Nome: ${convidado.name}`;
+                    elemento.appendChild(nome);
+                    const botaoExcluir = document.createElement("button");
+                    botaoExcluir.textContent = "Excluir";
+                    botaoExcluir.className = "botaoExcluir";
+                    botaoExcluir.onclick = () => Delete(convidado.id, convidado.name);
+                    elemento.appendChild(botaoExcluir);
+                    lista.appendChild(elemento);
+                });
+            })
+            .catch((erro) => console.error('Erro ao carregar a lista de convidados:', erro));
+        }
+        async function Delete(id, nome) {
+            const confirmacao = confirm(`Tem certeza que deseja excluir o convidado ${nome}?`);
+
+            if (confirmacao) {    
+                await fetch(`https://casamentobrunoeagatha.com.br/convidados/${id}`, { method: "DELETE" });
+                alert(`Convidado ${nome} foi excluído!`);
+                pegarLista();
+            }
+        }
+    </script>
+</body>
+</html>
